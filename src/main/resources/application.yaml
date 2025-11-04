@@ -359,7 +359,9 @@ hapi:
     # comma-separated package names, will be @ComponentScan'ed by Spring to allow for creating custom Spring beans
 
     # custom-provider-classes:
-    custom-interceptor-classes: nl.hinq.NviInterceptor
+    custom-interceptor-classes:
+      - nl.hinq.NviInterceptor
+      - nl.hinq.SourceInformationAddingInterceptor
     # custom-provider-classes:
     
     # store_meta_source_information: NONE
