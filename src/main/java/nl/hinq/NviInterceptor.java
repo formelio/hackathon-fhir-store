@@ -37,9 +37,9 @@ public class NviInterceptor {
 				return;
 			}
 			
-			// String subscription = SUBSCRIPTION.formatted(optionalBsn.get(), ORG_URA);
-			// postSubscription(requestDetails, subscription);
-			// log.info("Posted Subscription to Mitz for patient with ID: {}", newResource.getIdElement().getIdPart());
+			String subscription = SUBSCRIPTION.formatted(optionalBsn.get(), ORG_URA);
+			postSubscription(requestDetails, subscription);
+			log.info("Posted Subscription to Mitz for patient with ID: {}", newResource.getIdElement().getIdPart());
 
 			String documentReference = DOCUMENT_REFERENCE.formatted(optionalBsn.get(), ORG_URA);
 			postDocumentReference(requestDetails, documentReference);
