@@ -38,10 +38,12 @@ public class NviInterceptor {
 			}
 			
 			String subscription = SUBSCRIPTION.formatted(optionalBsn.get(), ORG_URA);
+			log.info("Subscription to post: {}", subscription);
 			postSubscription(requestDetails, subscription);
 			log.info("Posted Subscription to Mitz for patient with ID: {}", newResource.getIdElement().getIdPart());
 
 			String documentReference = DOCUMENT_REFERENCE.formatted(optionalBsn.get(), ORG_URA);
+			log.info("DocumentReference to post: {}", documentReference);
 			postDocumentReference(requestDetails, documentReference);
 			log.info("Posted DocumentReference to NVI for patient with ID: {}", newResource.getIdElement().getIdPart());
 
