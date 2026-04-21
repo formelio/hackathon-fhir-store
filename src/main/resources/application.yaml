@@ -360,8 +360,9 @@ hapi:
 
     # custom-provider-classes:
     custom-interceptor-classes:
-      - nl.hinq.NviInterceptor
-      - nl.hinq.SourceInformationAddingInterceptor
+#      - nl.hinq.SearchNarrowInterceptor
+       - nl.hinq.NviInterceptor
+      # - nl.hinq.SourceInformationAddingInterceptor
     # custom-provider-classes:
     
     # store_meta_source_information: NONE
