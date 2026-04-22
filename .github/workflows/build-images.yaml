@@ -7,7 +7,7 @@ on:
     paths-ignore:
       - "charts/**"
   pull_request:
-    branches: [master]
+    branches: [main]
     paths-ignore:
       - "charts/**"
 env:
