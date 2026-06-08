@@ -1,0 +1,81 @@
+# Default values for fhir.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# Base configuration for HAPI FHIR server
+# These values are added to the ConfigMap and mounted as environment variables
+# See: https://github.com/hapifhir/hapi-fhir-jpaserver-starter#configuration
+config:
+  SPRING.DATASOURCE.DRIVERCLASSNAME: org.postgresql.Driver
+  SPRING.DATASOURCE.PASSWORD: "4o1bUIrr8s#0j5wUyYl^YElW"
+  SPRING.DATASOURCE.URL: jdbc:postgresql://db01.dev.ivido.nl:5432/nuts_knooppunt_dev_source_resource_r4
+  SPRING.DATASOURCE.USERNAME: nuts_knooppunt_dev_source_resource_r4
+  SPRING.JPA.PROPERTIES.HIBERNATE.FORMAT_SQL: "false"
+  SPRING.JPA.PROPERTIES.HIBERNATE.SHOW_SQL: "false"
+  SPRING.JPA.PROPERTIES.HIBERNATE.SEARCH_ENABLED: "true"
+  spring.jpa.properties.hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+
+  # Prevents encoding of the pipe char in queries
+  server.tomcat.relaxed-query-chars: "|"
+
+  hapi.fhir.fhir_version: R4
+  hapi.fhir.allow_cascading_deletes: "true"
+  hapi.fhir.allow_multiple_delete: "true"
+  hapi.fhir.delete_expunge_enabled: "true"
+  hapi.fhir.server_id_strategy: UUID
+  hapi.fhir.store_meta_source_information: SOURCE_URI
+  hapi.fhir.client_id_strategy: ANY
+
+podAnnotations: {}
+
+fullnameOverride: "medicom-test"
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: europe-west4-docker.pkg.dev/ivido-development/ivido-dev/nuts-knooppunt/fhir-bronhouder
+  # This sets the pull policy for images.
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: medicom-nuts-v6
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  hosts:
+    - host: fhir.medicom-test.acc.hinq.nl
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: medicom-test-letsencrypt
+      hosts:
+        - fhir.medicom-test.acc.hinq.nl
+
+resources: {}
+#   limits:
+#     cpu: 200m
+#     memory: 256Mi
+#   requests:
+#     cpu: 200m
+#     memory: 256Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# livenessProbe:
+#   httpGet:
+#     path: /
+#     port: http
+readinessProbe:
+  tcpSocket:
+    port: http
+  periodSeconds: 10
+  failureThreshold: 3
+  successThreshold: 1
+  initialDelaySeconds: 60
+  timeoutSeconds: 1
