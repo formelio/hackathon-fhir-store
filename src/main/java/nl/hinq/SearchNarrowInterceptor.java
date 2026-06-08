@@ -8,8 +8,12 @@ import java.util.Map;
 
 public class SearchNarrowInterceptor {
 
-	@Hook(Pointcut.SERVER_INCOMING_REQUEST_POST_PROCESSED)
+	@Hook(value = Pointcut.SERVER_INCOMING_REQUEST_POST_PROCESSED, order = 100)
 	public void resourceCreated(RequestDetails requestDetails) {
+		if (requestDetails.getAttribute("isAdmin") != null && (boolean) requestDetails.getAttribute("isAdmin")) {
+			return;
+		}
+
 		Map<String, String[]> parameters = requestDetails.getParameters();
 
 		String resourceName = requestDetails.getResourceName();
