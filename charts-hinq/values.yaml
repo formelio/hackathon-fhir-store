@@ -48,6 +48,9 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/auth-tls-secret: acc-medicom-test/uzi-ca
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: optional
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "3"
   hosts:
     - host: fhir.medicom-test.acc.hinq.nl
       paths:
